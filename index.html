@@ -373,10 +373,12 @@ function submitTest() {
 function showResults(scores) {
   document.getElementById('quiz').style.display = 'none';
   document.getElementById('results').style.display = 'block';
-  // Scroll to top - works both standalone and inside iFrame
-  try { window.parent.scrollTo({top: 0, behavior: 'smooth'}); } catch(e) {}
+  // Scroll iframe itself to top
   window.scrollTo({top: 0, behavior: 'smooth'});
   document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  // Tell parent page to scroll to top (cross-origin postMessage)
+  try { window.parent.postMessage({type: 'antreibertest_scrollTop'}, '*'); } catch(e) {}
   buildChart(scores);
   buildCards(scores);
 }
@@ -444,9 +446,10 @@ function resetTest() {
   document.getElementById('prog-bar').style.width   = '0%';
   document.getElementById('results').style.display  = 'none';
   document.getElementById('quiz').style.display     = 'block';
-  try { window.parent.scrollTo({top: 0, behavior: 'smooth'}); } catch(e) {}
   window.scrollTo({top: 0, behavior: 'smooth'});
   document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+  try { window.parent.postMessage({type: 'antreibertest_scrollTop'}, '*'); } catch(e) {}
 }
 
 buildQ();
