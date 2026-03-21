@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Antreibertest &middot; Conny Lochelfeld</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#111; --bg2:#1A1A1A; --bg3:#222; --border:#2E2E2E;
+  --text:#E8E4DC; --muted:#888880; --accent:#C8A46E; --danger:#C87060;
+  --c1:#C8A46E; --c2:#7AADAA; --c3:#9B8EC4; --c4:#89B87A; --c5:#C87A7A;
+}
+html { scroll-behavior: smooth; }
+body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+.page { max-width:760px; margin:0 auto; padding:56px 24px 100px; }
+
+.eyebrow { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; display:block; }
+.intro h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,10vw,88px); line-height:.95; color:var(--text); margin-bottom:24px; }
+.intro-body { font-size:15px; color:var(--muted); max-width:560px; line-height:1.75; margin-bottom:40px; }
+.intro-body strong { color:var(--text); font-weight:500; }
+.rule { height:1px; background:var(--border); margin:40px 0; }
+.instruction-row { display:flex; gap:32px; flex-wrap:wrap; margin-bottom:40px; }
+.instruction-item { display:flex; align-items:flex-start; gap:12px; flex:1; min-width:180px; }
+.instruction-num { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--accent); line-height:1; flex-shrink:0; margin-top:2px; }
+.instruction-text { font-size:13px; color:var(--muted); line-height:1.6; }
+.instruction-text strong { color:var(--text); display:block; margin-bottom:2px; font-size:14px; }
+
+.progress-wrap { margin-bottom:40px; }
+.progress-meta { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:8px; }
+.progress-track { height:3px; background:var(--border); border-radius:99px; overflow:hidden; }
+.progress-fill { height:100%; background:var(--accent); border-radius:99px; width:0%; transition:width .35s ease; }
+
+.q-block { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:24px 24px 20px; margin-bottom:12px; transition:border-color .2s; }
+.q-block:hover { border-color:#3E3E3E; }
+.q-block.answered { border-color:#3A3228; }
+.q-block.error { border-color:var(--danger) !important; box-shadow:0 0 0 1px var(--danger); }
+.q-meta { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+.q-text { font-size:14px; color:var(--text); margin-bottom:20px; line-height:1.65; }
+.scale-legend { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-bottom:6px; }
+.scale-buttons { display:flex; justify-content:space-between; gap:6px; }
+.scale-buttons label { display:flex; flex-direction:column; align-items:center; cursor:pointer; flex:1; }
+.scale-buttons input[type=radio] { display:none; }
+.scale-pip {
+  width:100%; height:44px; border-radius:8px; border:1px solid var(--border); background:var(--bg3);
+  display:flex; align-items:center; justify-content:center;
+  font-size:13px; font-weight:500; color:var(--muted);
+  cursor:pointer; transition:all .15s ease; user-select:none;
+}
+.scale-buttons label:hover .scale-pip { border-color:var(--accent); color:var(--accent); }
+.scale-buttons input:checked + .scale-pip { background:var(--accent); border-color:var(--accent); color:#111; font-weight:600; }
+
+.submit-section { margin-top:48px; text-align:center; }
+.btn { display:inline-flex; align-items:center; gap:10px; padding:16px 44px; border:none; border-radius:8px; font-family:'Outfit',sans-serif; font-size:14px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; transition:all .2s; text-decoration:none; }
+.btn-primary { background:var(--accent); color:#111; }
+.btn-primary:hover { background:#d4b07e; transform:translateY(-1px); box-shadow:0 8px 24px rgba(200,164,110,.25); }
+.btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--border); }
+.btn-ghost:hover { border-color:var(--muted); color:var(--text); }
+.error-hint { margin-top:16px; font-size:13px; color:var(--danger); min-height:20px; }
+
+#results { display:none; }
+.results-hero { margin-bottom:56px; }
+.results-hero h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(44px,8vw,72px); line-height:.95; margin-bottom:16px; }
+.results-hero p { font-size:14px; color:var(--muted); max-width:520px; line-height:1.75; }
+
+.chart-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:32px; margin-bottom:40px; }
+.chart-card-label { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:28px; }
+.bar-row { display:grid; grid-template-columns:140px 1fr 52px; align-items:center; gap:16px; margin-bottom:20px; }
+.bar-name { font-size:12px; font-weight:600; color:var(--text); letter-spacing:.04em; text-transform:uppercase; text-align:right; }
+.bar-track { background:var(--bg3); border-radius:4px; height:10px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:4px; width:0; transition:width 1.1s cubic-bezier(.22,1,.36,1); }
+.bar-score { font-size:12px; color:var(--muted); font-weight:500; text-align:right; }
+.bar-score span { color:var(--text); font-weight:600; }
+
+.section-label { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:20px; margin-top:48px; }
+.r-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:28px; margin-bottom:12px; border-left:3px solid var(--accent); opacity:0; transform:translateY(20px); transition:opacity .5s ease,transform .5s ease; }
+.r-card.show { opacity:1; transform:translateY(0); }
+.r-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:4px; flex-wrap:wrap; }
+.r-card-name { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:.04em; line-height:1; }
+.r-card-badge { font-size:10px; letter-spacing:.15em; text-transform:uppercase; padding:5px 12px; border-radius:4px; font-weight:600; flex-shrink:0; }
+.badge-low  { background:rgba(136,136,128,.12); color:var(--muted); }
+.badge-mid  { background:rgba(200,164,110,.12); color:var(--accent); }
+.badge-high { background:rgba(200,164,110,.2);  color:var(--accent); border:1px solid rgba(200,164,110,.35); }
+.r-card-sub { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
+.r-card-desc { font-size:14px; line-height:1.75; color:var(--muted); margin-bottom:20px; }
+.r-card-desc strong { color:var(--text); font-weight:500; }
+.beliefs { display:flex; flex-direction:column; gap:12px; }
+.belief { display:flex; gap:12px; font-size:13px; line-height:1.6; }
+.belief-icon { font-size:11px; flex-shrink:0; margin-top:3px; width:14px; color:var(--muted); }
+.belief-text { color:var(--muted); }
+.belief-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); display:block; margin-bottom:2px; }
+
+.cta-section { margin-top:56px; display:flex; flex-direction:column; gap:12px; }
+.cta-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:28px; display:flex; gap:20px; align-items:flex-start; text-decoration:none; color:var(--text); transition:border-color .2s,background .2s; }
+.cta-card:hover { border-color:var(--accent); background:#1e1c18; }
+.cta-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
+.cta-body { flex:1; }
+.cta-tag { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+.cta-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:.04em; margin-bottom:8px; }
+.cta-text { font-size:13px; color:var(--muted); line-height:1.65; }
+.cta-arrow { font-size:18px; color:var(--muted); flex-shrink:0; transition:transform .2s,color .2s; margin-top:4px; }
+.cta-card:hover .cta-arrow { transform:translateX(4px); color:var(--accent); }
+
+.footer-note { margin-top:64px; padding-top:24px; border-top:1px solid var(--border); font-size:11px; color:#555; line-height:1.65; }
+.reset-wrap { text-align:center; margin-top:40px; }
+
+@media(max-width:520px){
+  .bar-row{grid-template-columns:90px 1fr 40px;gap:10px;}
+  .bar-name{font-size:10px;}
+  .scale-pip{height:44px;}
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.intro{animation:fadeUp .6s ease both;}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div id="quiz">
+  <div class="intro">
+    <span class="eyebrow">Selbsttest &middot; Transaktionsanalyse</span>
+    <h1>Deine inneren<br>Antreiber</h1>
+    <p class="intro-body">
+      Innere Antreiber sind Glaubenss&auml;tze, die wir fr&uuml;h &uuml;bernommen haben &ndash; und die uns auch als Erwachsene noch leiten.
+      <strong>Manchmal hilfreich, manchmal im Weg.</strong><br><br>
+      50 Aussagen, Skala 1&ndash;5. Antworte spontan &ndash; der erste Impuls ist der ehrlichste.
+    </p>
+    <div class="rule"></div>
+    <div class="instruction-row">
+      <div class="instruction-item">
+        <div class="instruction-num">01</div>
+        <div class="instruction-text"><strong>Spontan antworten</strong>Erster Impuls z&auml;hlt. Nicht lange nachdenken.</div>
+      </div>
+      <div class="instruction-item">
+        <div class="instruction-num">02</div>
+        <div class="instruction-text"><strong>Skala 1&ndash;5</strong>1 = Trifft gar nicht zu &nbsp;&middot;&nbsp; 5 = Trifft v&ouml;llig zu</div>
+      </div>
+      <div class="instruction-item">
+        <div class="instruction-num">03</div>
+        <div class="instruction-text"><strong>Anonym &amp; kostenlos</strong>Keine Daten werden gespeichert.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span id="prog-label">0 von 50 beantwortet</span>
+      <span id="prog-pct">0%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="prog-bar"></div></div>
+  </div>
+
+  <div id="qcontainer"></div>
+
+  <div class="submit-section">
+    <button class="btn btn-primary" onclick="submitTest()">Auswertung anzeigen &nbsp;&rarr;</button>
+    <div class="error-hint" id="err-hint"></div>
+  </div>
+</div>
+
+<div id="results">
+  <div class="results-hero">
+    <span class="eyebrow">Deine Auswertung</span>
+    <h2>Dein<br>Profil</h2>
+    <p>Hohe Werte bedeuten stark ausgepr&auml;gte Antreiber &ndash; das ist weder gut noch schlecht. Jeder Antreiber hat seine St&auml;rken. Und seine Kosten.</p>
+  </div>
+  <div class="chart-card">
+    <div class="chart-card-label">&Uuml;bersicht &middot; Alle f&uuml;nf Antreiber &middot; Max. 50 Punkte</div>
+    <div id="chart"></div>
+  </div>
+  <div class="section-label">Deine Antreiber im Detail &middot; sortiert nach Auspr&auml;gung</div>
+  <div id="rcards"></div>
+  <div class="cta-section">
+    <a href="https://www.connylochelfeld.de/contact" target="_blank" class="cta-card">
+      <div class="cta-icon">&#128172;</div>
+      <div class="cta-body">
+        <div class="cta-tag">N&auml;chster Schritt</div>
+        <div class="cta-title">Coaching mit Conny</div>
+        <div class="cta-text">Du willst verstehen, was hinter deinen Antreibern steckt &ndash; und wie du freier damit umgehst? Im Coaching schauen wir uns das gemeinsam an. Erstes Gespr&auml;ch kostenlos und unverbindlich.</div>
+      </div>
+      <div class="cta-arrow">&rarr;</div>
+    </a>
+    <div class="cta-card" style="cursor:default;pointer-events:none;">
+      <div class="cta-icon">&#128202;</div>
+      <div class="cta-body">
+        <div class="cta-tag">Tiefergehende Diagnostik</div>
+        <div class="cta-title">BIP &ndash; Bochumer Inventar zur berufsbezo&shy;genen Pers&ouml;nlichkeit</div>
+        <div class="cta-text">Dieser Test gibt dir einen ersten Eindruck. Das BIP ist ein wissenschaftlich fundiertes Pers&ouml;nlichkeitsinventar mit 14 berufsrelevanten Dimensionen &ndash; deutlich umfassender und pr&auml;ziser. Sprich Conny gerne im Erstgespr&auml;ch darauf an.</div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-note">
+    Fragebogen nach Karl K&auml;lin und Peter M&uuml;ri: &bdquo;Sich und andere f&uuml;hren&ldquo;, Ott Verlag, 2000.
+    Urspr&uuml;nglich entwickelt auf Basis der Transaktionsanalyse nach Taibi Kahler.
+    Dieses Ergebnis dient der Selbstreflexion und ersetzt keine professionelle Diagnostik.
+  </div>
+  <div class="reset-wrap">
+    <button class="btn btn-ghost" onclick="resetTest()">&#8635; &nbsp;Test neu starten</button>
+  </div>
+</div>
+
+</div>
+<script>
+var QS = [
+  {n:1,  t:'Wenn ich eine Arbeit mache, dann mache ich sie gr\u00fcndlich.'},
+  {n:2,  t:'Ich f\u00fchle mich verantwortlich, dass diejenigen, die mit mir zu tun haben, sich wohl f\u00fchlen.'},
+  {n:3,  t:'Ich bin st\u00e4ndig auf Trab.'},
+  {n:4,  t:'Anderen gegen\u00fcber zeige ich meine Schw\u00e4chen nicht gern.'},
+  {n:5,  t:'Wenn ich raste, roste ich.'},
+  {n:6,  t:'H\u00e4ufig brauche ich S\u00e4tze wie: \u201eEs ist schwierig, etwas so genau zu sagen.\u201c'},
+  {n:7,  t:'Ich sage oft mehr, als eigentlich n\u00f6tig ist.'},
+  {n:8,  t:'Ich habe M\u00fche, Leute zu akzeptieren, die nicht genau sind.'},
+  {n:9,  t:'Es f\u00e4llt mir schwer, Gef\u00fchle zu zeigen.'},
+  {n:10, t:'Nur nicht locker lassen ist meine Devise.'},
+  {n:11, t:'Wenn ich eine Meinung \u00e4u\u00dfere, begr\u00fcnde ich sie auch.'},
+  {n:12, t:'Wenn ich einen Wunsch habe, erf\u00fclle ich ihn mir schnell.'},
+  {n:13, t:'Ich liefere einen Bericht erst ab, wenn ich ihn mehrere Male \u00fcberarbeitet habe.'},
+  {n:14, t:'Leute, die \u201eherumtr\u00f6deln\u201c, regen mich auf.'},
+  {n:15, t:'Es ist mir wichtig, von den anderen akzeptiert zu werden.'},
+  {n:16, t:'Ich habe eine harte Schale, aber einen weichen Kern.'},
+  {n:17, t:'Ich versuche oft herauszufinden, was andere von mir erwarten, um mich danach zu richten.'},
+  {n:18, t:'Leute, die unbek\u00fcmmert in den Tag hineinleben, kann ich nur schwer verstehen.'},
+  {n:19, t:'Bei Diskussionen unterbreche ich die anderen oft.'},
+  {n:20, t:'Ich l\u00f6se meine Probleme selber.'},
+  {n:21, t:'Aufgaben erledige ich m\u00f6glichst rasch.'},
+  {n:22, t:'Im Umgang mit anderen bin ich auf Distanz bedacht.'},
+  {n:23, t:'Ich sollte viele Aufgaben noch besser erledigen.'},
+  {n:24, t:'Ich k\u00fcmmere mich pers\u00f6nlich auch um nebens\u00e4chliche Dinge.'},
+  {n:25, t:'Erfolge fallen nicht vom Himmel, ich muss sie hart erarbeiten.'},
+  {n:26, t:'F\u00fcr dumme Fehler habe ich kein Verst\u00e4ndnis.'},
+  {n:27, t:'Ich sch\u00e4tze es, wenn andere auf meine Fragen rasch und b\u00fcndig antworten.'},
+  {n:28, t:'Es ist mir wichtig, von den anderen zu erfahren, ob ich meine Sache gut gemacht habe.'},
+  {n:29, t:'Wenn ich eine Aufgabe einmal begonnen habe, f\u00fchre ich sie auch zu Ende.'},
+  {n:30, t:'Ich stelle meine W\u00fcnsche und Bed\u00fcrfnisse zugunsten derjenigen anderer Personen zur\u00fcck.'},
+  {n:31, t:'Ich bin anderen gegen\u00fcber oft hart, um von ihnen nicht verletzt zu werden.'},
+  {n:32, t:'Ich trommle oft ungeduldig mit den Fingern auf den Tisch.'},
+  {n:33, t:'Beim Erkl\u00e4ren von Sachverhalten verwende ich gerne eine klare Aufz\u00e4hlung.'},
+  {n:34, t:'Ich glaube, dass die meisten Dinge nicht so einfach sind, wie viele meinen.'},
+  {n:35, t:'Es ist mir unangenehm, andere Leute zu kritisieren.'},
+  {n:36, t:'Bei Diskussionen nicke ich h\u00e4ufig mit dem Kopf.'},
+  {n:37, t:'Ich strenge mich an, meine Ziele zu erreichen.'},
+  {n:38, t:'Mein Gesichtsausdruck ist eher ernst.'},
+  {n:39, t:'Ich bin nerv\u00f6s.'},
+  {n:40, t:'So schnell kann mich nichts ersch\u00fcttern.'},
+  {n:41, t:'Meine Probleme gehen die anderen nichts an.'},
+  {n:42, t:'Ich sage oft: \u201eMacht mal vorw\u00e4rts\u201c.'},
+  {n:43, t:'Ich sage oft: \u201eGenau\u201c, \u201eExakt\u201c, \u201eKlar\u201c, \u201eLogisch\u201c.'},
+  {n:44, t:'Ich sage oft: \u201eDas verstehe ich nicht\u201c.'},
+  {n:45, t:'Ich sage eher \u201eK\u00f6nnen Sie es nicht einmal versuchen\u201c als \u201eVersuchen Sie es einmal\u201c.'},
+  {n:46, t:'Ich bin diplomatisch.'},
+  {n:47, t:'Ich versuche, die an mich gestellten Erwartungen zu \u00fcbertreffen.'},
+  {n:48, t:'Beim Telefonieren bearbeite ich oft noch etwas anderes.'},
+  {n:49, t:'Auf die Z\u00e4hne bei\u00dfen, hei\u00dft die Devise.'},
+  {n:50, t:'Trotz enormer Anstrengung will mir vieles einfach nicht gelingen.'}
+];
+
+var DRIVERS = [
+  {
+    key:'perfekt', name:'Sei perfekt', qs:[1,8,11,13,23,24,33,38,43,47], color:'#C8A46E',
+    sub:'Perfektion &amp; Qualit\u00e4t',
+    belief:'\u201eIch tauge nur etwas, wenn ich alles m\u00f6glichst perfekt mache.\u201c',
+    erlauber:'\u201eIch darf Fehler machen und daraus lernen. 90\u00a0% k\u00f6nnen gen\u00fcgen.\u201c',
+    desc:'Du setzt dir <strong>hohe Ma\u00dfst\u00e4be</strong> und achtest auf Details, die anderen nicht auffallen. Fehler treffen dich, weil du wei\u00dft, wie es besser gehen k\u00f6nnte. Diese Gr\u00fcndlichkeit ist ein echter Vorteil \u2013 solange sie nicht zum Selbstzweck wird.',
+    staerke:'Qualit\u00e4t, Zuverl\u00e4ssigkeit, Gr\u00fcndlichkeit \u2013 du lieferst Arbeit, auf die du stolz sein kannst.',
+    schatten:'Perfektionismus kann zur L\u00e4hmung f\u00fchren: Dinge werden nie fertig, weil sie nie gut genug sind. Selbstkritik, die motivieren sollte, kostet am Ende mehr Energie als sie bringt.'
+  },
+  {
+    key:'schnell', name:'Beeil dich', qs:[3,12,14,19,21,27,32,39,42,48], color:'#7AADAA',
+    sub:'Tempo &amp; Effizienz',
+    belief:'\u201eIch habe das Gef\u00fchl, dass mir die Zeit davonl\u00e4uft.\u201c',
+    erlauber:'\u201eIch darf mir Zeit nehmen. Manches darf auch l\u00e4nger dauern.\u201c',
+    desc:'Du bist schnell, denkst voraus und wirst ungeduldig, wenn andere zu langsam sind. Du erledigst Dinge, w\u00e4hrend andere noch \u00fcberlegen. Das macht dich <strong>effizient und entscheidungsfreudig</strong> \u2013 aber manchmal auch atemlos.',
+    staerke:'Entscheidungsfreude, Tempo, Umsetzungsst\u00e4rke \u2013 du bringst Dinge ins Rollen, wenn andere noch analysieren.',
+    schatten:'Hast erzeugt Fl\u00fcchtigkeit. Wichtiges wird \u00fcbersehen, Beziehungen laufen auf Sparflamme, und der Moment selbst bleibt auf der Strecke.'
+  },
+  {
+    key:'streng', name:'Streng dich an', qs:[5,6,10,18,25,29,34,37,44,50], color:'#9B8EC4',
+    sub:'Einsatz &amp; Ausdauer',
+    belief:'\u201eOhne Flei\u00df kein Preis. Ich g\u00f6nne mir keine Verschnaufpausen.\u201c',
+    erlauber:'\u201eIch darf an der Arbeit Spa\u00df haben. Auch leichte Dinge d\u00fcrfen gelingen.\u201c',
+    desc:'F\u00fcr dich z\u00e4hlt nicht nur das Ergebnis, sondern der Aufwand dahinter. Du glaubst, dass echte Leistung harte Arbeit bedeutet \u2013 und bist entsprechend <strong>ausdauernd und zuverl\u00e4ssig</strong>, auch wenn es schwierig wird.',
+    staerke:'Ausdauer, Tiefe, Engagement \u2013 du gibst nicht auf, wenn andere l\u00e4ngst aufgeh\u00f6rt h\u00e4tten.',
+    schatten:'Leichtigkeit wird als verd\u00e4chtig empfunden. Erfolge, die ohne Kampf kommen, f\u00fchlen sich nicht richtig an. Ersch\u00f6pfung wird lange ignoriert.'
+  },
+  {
+    key:'gefallig', name:'Sei gef\u00e4llig', qs:[2,7,15,17,28,30,35,36,45,46], color:'#89B87A',
+    sub:'Harmonie &amp; F\u00fcrsorge',
+    belief:'\u201eWenn ich es allen recht mache, bin ich wertvoll und beliebt.\u201c',
+    erlauber:'\u201eIch darf meine eigenen Bed\u00fcrfnisse und Standpunkte ernst nehmen.\u201c',
+    desc:'Du bist <strong>empathisch, sozial klug</strong> und auf gute Beziehungen bedacht. Du nimmst wahr, wie es anderen geht \u2013 oft bevor sie es selbst aussprechen. Das macht dich zum wertvollen Teamplayer. Und manchmal zum letzten, der an sich denkt.',
+    staerke:'Empathie, Teamgeist, soziale Intelligenz \u2013 du schaffst Verbindung und Vertrauen, wo andere polarisieren.',
+    schatten:'Eigene Bed\u00fcrfnisse werden systematisch zur\u00fcckgestellt. Nein sagen f\u00fchlt sich gef\u00e4hrlich an. Anerkennung von au\u00dfen wird zur W\u00e4hrung des eigenen Selbstwerts.'
+  },
+  {
+    key:'stark', name:'Sei stark', qs:[4,9,16,20,22,26,31,40,41,49], color:'#C87A7A',
+    sub:'St\u00e4rke &amp; Kontrolle',
+    belief:'\u201eIch zeige keine Schw\u00e4che. Auf mich kann man sich verlassen.\u201c',
+    erlauber:'\u201eIch darf Gef\u00fchle zeigen und Hilfe annehmen \u2013 das macht mich nicht kleiner.\u201c',
+    desc:'Du bist der Fels, auf den andere sich st\u00fctzen. Emotionale Kontrolle, Unabh\u00e4ngigkeit, Standhaftigkeit \u2013 das sind deine Markenzeichen. Du brauchst niemanden. Das glauben zumindest die meisten, die mit dir zu tun haben. Manchmal auch du selbst.',
+    staerke:'Zuverl\u00e4ssigkeit, Belastbarkeit, Unabh\u00e4ngigkeit \u2013 du wankst nicht, wenn andere wackeln.',
+    schatten:'Emotionale Isolation ist der Preis dieser St\u00e4rke. Hilfe anzunehmen f\u00fchlt sich wie Versagen an. Der innere Druck, immer funktionieren zu m\u00fcssen, bleibt lange unsichtbar.'
+  }
+];
+
+function getLevel(s) {
+  if (s <= 19) return {label:'Weniger ausgepr\u00e4gt', cls:'badge-low'};
+  if (s <= 29) return {label:'Ausgepr\u00e4gt',         cls:'badge-mid'};
+  return              {label:'Stark ausgepr\u00e4gt',  cls:'badge-high'};
+}
+
+var ans = {};
+
+function buildQ() {
+  var c = document.getElementById('qcontainer');
+  c.innerHTML = '';
+  for (var i = 0; i < QS.length; i++) {
+    var q = QS[i];
+    var d = document.createElement('div');
+    d.className = 'q-block';
+    d.id = 'qb' + q.n;
+    var btns = '';
+    for (var v = 1; v <= 5; v++) {
+      btns += '<label><input type="radio" name="q' + q.n + '" value="' + v + '" onchange="rec(' + q.n + ',' + v + ')"><div class="scale-pip">' + v + '</div></label>';
+    }
+    d.innerHTML =
+      '<div class="q-meta">Frage ' + q.n + ' &middot; von 50</div>' +
+      '<div class="q-text">' + q.t + '</div>' +
+      '<div class="scale-legend"><span>Trifft gar nicht zu</span><span>Trifft v&ouml;llig zu</span></div>' +
+      '<div class="scale-buttons">' + btns + '</div>';
+    c.appendChild(d);
+  }
+}
+
+function rec(n, v) {
+  ans[n] = v;
+  var b = document.getElementById('qb' + n);
+  b.classList.add('answered');
+  b.classList.remove('error');
+  var done = Object.keys(ans).length;
+  var pct  = Math.round(done / 50 * 100);
+  document.getElementById('prog-label').textContent = done + ' von 50 beantwortet';
+  document.getElementById('prog-pct').textContent   = pct + '%';
+  document.getElementById('prog-bar').style.width   = pct + '%';
+  document.getElementById('err-hint').textContent   = '';
+}
+
+function submitTest() {
+  var missing = [];
+  for (var i = 0; i < QS.length; i++) {
+    if (!ans[QS[i].n]) missing.push(QS[i]);
+  }
+  if (missing.length) {
+    for (var i = 0; i < missing.length; i++) {
+      document.getElementById('qb' + missing[i].n).classList.add('error');
+    }
+    document.getElementById('qb' + missing[0].n).scrollIntoView({behavior:'smooth', block:'center'});
+    document.getElementById('err-hint').textContent =
+      'Noch ' + missing.length + ' Frage' + (missing.length > 1 ? 'n' : '') + ' offen \u2013 bitte alle beantworten.';
+    return;
+  }
+  var scores = {};
+  for (var i = 0; i < DRIVERS.length; i++) {
+    var d = DRIVERS[i];
+    var sum = 0;
+    for (var j = 0; j < d.qs.length; j++) sum += (ans[d.qs[j]] || 0);
+    scores[d.key] = sum;
+  }
+  showResults(scores);
+}
+
+function showResults(scores) {
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('results').style.display = 'block';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  buildChart(scores);
+  buildCards(scores);
+}
+
+function buildChart(scores) {
+  var c = document.getElementById('chart');
+  c.innerHTML = '';
+  for (var i = 0; i < DRIVERS.length; i++) {
+    var d   = DRIVERS[i];
+    var s   = scores[d.key];
+    var pct = Math.round(s / 50 * 100);
+    var row = document.createElement('div');
+    row.className = 'bar-row';
+    row.innerHTML =
+      '<div class="bar-name">' + d.name + '</div>' +
+      '<div class="bar-track"><div class="bar-fill" style="background:' + d.color + '" data-p="' + pct + '"></div></div>' +
+      '<div class="bar-score"><span>' + s + '</span>/50</div>';
+    c.appendChild(row);
+  }
+  requestAnimationFrame(function() {
+    setTimeout(function() {
+      var fills = document.querySelectorAll('.bar-fill');
+      for (var i = 0; i < fills.length; i++) {
+        fills[i].style.width = fills[i].getAttribute('data-p') + '%';
+      }
+    }, 80);
+  });
+}
+
+function buildCards(scores) {
+  var c = document.getElementById('rcards');
+  c.innerHTML = '';
+  var sorted = DRIVERS.slice().sort(function(a, b) { return scores[b.key] - scores[a.key]; });
+  for (var i = 0; i < sorted.length; i++) {
+    (function(d, idx) {
+      var s  = scores[d.key];
+      var lv = getLevel(s);
+      var card = document.createElement('div');
+      card.className = 'r-card';
+      card.style.borderLeftColor = d.color;
+      card.innerHTML =
+        '<div class="r-card-top">' +
+          '<div class="r-card-name" style="color:' + d.color + '">' + d.name + '</div>' +
+          '<div class="r-card-badge ' + lv.cls + '">' + lv.label + ' &middot; ' + s + '&thinsp;/&thinsp;50</div>' +
+        '</div>' +
+        '<div class="r-card-sub">' + d.sub + '</div>' +
+        '<div class="r-card-desc">' + d.desc + '</div>' +
+        '<div class="beliefs">' +
+          '<div class="belief"><div class="belief-icon">&#9670;</div><div class="belief-text"><span class="belief-label">Innerer Glaubenssatz</span>' + d.belief + '</div></div>' +
+          '<div class="belief"><div class="belief-icon">&#9671;</div><div class="belief-text"><span class="belief-label">Erlauber</span>' + d.erlauber + '</div></div>' +
+          '<div class="belief"><div class="belief-icon">+</div><div class="belief-text"><span class="belief-label">St\u00e4rke</span>' + d.staerke + '</div></div>' +
+          '<div class="belief"><div class="belief-icon">&minus;</div><div class="belief-text"><span class="belief-label">Schatten</span>' + d.schatten + '</div></div>' +
+        '</div>';
+      c.appendChild(card);
+      setTimeout(function() { card.classList.add('show'); }, 100 + idx * 100);
+    })(sorted[i], i);
+  }
+}
+
+function resetTest() {
+  ans = {};
+  buildQ();
+  document.getElementById('prog-label').textContent = '0 von 50 beantwortet';
+  document.getElementById('prog-pct').textContent   = '0%';
+  document.getElementById('prog-bar').style.width   = '0%';
+  document.getElementById('results').style.display  = 'none';
+  document.getElementById('quiz').style.display     = 'block';
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+buildQ();
+</script>
+</body>
+</html>
