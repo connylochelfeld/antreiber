@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Antreibertest &middot; Conny Lochelfeld</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -14,19 +14,19 @@
   --c1:#C8A46E; --c2:#7AADAA; --c3:#9B8EC4; --c4:#89B87A; --c5:#C87A7A;
 }
 html { scroll-behavior: smooth; }
-body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+body { font-family:'Manrope',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
 .page { max-width:760px; margin:0 auto; padding:56px 24px 100px; }
 
 .eyebrow { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; display:block; }
-.intro h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(52px,10vw,88px); line-height:.95; color:var(--text); margin-bottom:24px; }
-.intro-body { font-size:15px; color:var(--muted); max-width:560px; line-height:1.75; margin-bottom:40px; }
+.intro h1 { font-family:'Manrope',sans-serif; font-size:clamp(40px,6vw,64px); line-height:1.2; font-weight:800; color:var(--text); margin-bottom:24px; }
+.intro-body { font-size:16px; color:var(--muted); max-width:560px; line-height:1.5; margin-bottom:40px; }
 .intro-body strong { color:var(--text); font-weight:500; }
 .rule { height:1px; background:var(--border); margin:40px 0; }
 .instruction-row { display:flex; gap:32px; flex-wrap:wrap; margin-bottom:40px; }
 .instruction-item { display:flex; align-items:flex-start; gap:12px; flex:1; min-width:180px; }
-.instruction-num { font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--accent); line-height:1; flex-shrink:0; margin-top:2px; }
-.instruction-text { font-size:13px; color:var(--muted); line-height:1.6; }
-.instruction-text strong { color:var(--text); display:block; margin-bottom:2px; font-size:14px; }
+.instruction-num { font-family:'Manrope',sans-serif; font-size:28px; font-weight:800; color:var(--accent); line-height:1; flex-shrink:0; margin-top:2px; }
+.instruction-text { font-size:16px; color:var(--muted); line-height:1.5; }
+.instruction-text strong { color:var(--text); display:block; margin-bottom:2px; font-size:16px; }
 
 .progress-wrap { margin-bottom:40px; }
 .progress-meta { display:flex; justify-content:space-between; font-size:12px; color:var(--muted); margin-bottom:8px; }
@@ -38,7 +38,7 @@ body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text);
 .q-block.answered { border-color:#3A3228; }
 .q-block.error { border-color:var(--danger) !important; box-shadow:0 0 0 1px var(--danger); }
 .q-meta { font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
-.q-text { font-size:14px; color:var(--text); margin-bottom:20px; line-height:1.65; }
+.q-text { font-size:16px; color:var(--text); margin-bottom:20px; line-height:1.5; }
 .scale-legend { display:flex; justify-content:space-between; font-size:10px; color:var(--muted); margin-bottom:6px; }
 .scale-buttons { display:flex; justify-content:space-between; gap:6px; }
 .scale-buttons label { display:flex; flex-direction:column; align-items:center; cursor:pointer; flex:1; }
@@ -53,7 +53,7 @@ body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text);
 .scale-buttons input:checked + .scale-pip { background:var(--accent); border-color:var(--accent); color:#111; font-weight:600; }
 
 .submit-section { margin-top:48px; text-align:center; }
-.btn { display:inline-flex; align-items:center; gap:10px; padding:16px 44px; border:none; border-radius:8px; font-family:'Outfit',sans-serif; font-size:14px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; transition:all .2s; text-decoration:none; }
+.btn { display:inline-flex; align-items:center; gap:10px; padding:16px 44px; border:none; border-radius:8px; font-family:'Manrope',sans-serif; font-size:16px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; cursor:pointer; transition:all .2s; text-decoration:none; }
 .btn-primary { background:var(--accent); color:#111; }
 .btn-primary:hover { background:#d4b07e; transform:translateY(-1px); box-shadow:0 8px 24px rgba(200,164,110,.25); }
 .btn-ghost { background:transparent; color:var(--muted); border:1px solid var(--border); }
@@ -62,8 +62,8 @@ body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text);
 
 #results { display:none; }
 .results-hero { margin-bottom:56px; }
-.results-hero h2 { font-family:'Bebas Neue',sans-serif; font-size:clamp(44px,8vw,72px); line-height:.95; margin-bottom:16px; }
-.results-hero p { font-size:14px; color:var(--muted); max-width:520px; line-height:1.75; }
+.results-hero h2 { font-family:'Manrope',sans-serif; font-size:clamp(36px,5vw,52px); line-height:1.3; font-weight:800; margin-bottom:16px; }
+.results-hero p { font-size:16px; color:var(--muted); max-width:520px; line-height:1.5; }
 
 .chart-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:32px; margin-bottom:40px; }
 .chart-card-label { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:28px; }
@@ -78,16 +78,16 @@ body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text);
 .r-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:28px; margin-bottom:12px; border-left:3px solid var(--accent); opacity:0; transform:translateY(20px); transition:opacity .5s ease,transform .5s ease; }
 .r-card.show { opacity:1; transform:translateY(0); }
 .r-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:4px; flex-wrap:wrap; }
-.r-card-name { font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:.04em; line-height:1; }
+.r-card-name { font-family:'Manrope',sans-serif; font-size:32px; font-weight:800; line-height:1.3; }
 .r-card-badge { font-size:10px; letter-spacing:.15em; text-transform:uppercase; padding:5px 12px; border-radius:4px; font-weight:600; flex-shrink:0; }
 .badge-low  { background:rgba(136,136,128,.12); color:var(--muted); }
 .badge-mid  { background:rgba(200,164,110,.12); color:var(--accent); }
 .badge-high { background:rgba(200,164,110,.2);  color:var(--accent); border:1px solid rgba(200,164,110,.35); }
 .r-card-sub { font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:14px; }
-.r-card-desc { font-size:14px; line-height:1.75; color:var(--muted); margin-bottom:20px; }
+.r-card-desc { font-size:16px; line-height:1.5; color:var(--muted); margin-bottom:20px; }
 .r-card-desc strong { color:var(--text); font-weight:500; }
 .beliefs { display:flex; flex-direction:column; gap:12px; }
-.belief { display:flex; gap:12px; font-size:13px; line-height:1.6; }
+.belief { display:flex; gap:12px; font-size:16px; line-height:1.5; }
 .belief-icon { font-size:11px; flex-shrink:0; margin-top:3px; width:14px; color:var(--muted); }
 .belief-text { color:var(--muted); }
 .belief-label { font-size:10px; font-weight:600; text-transform:uppercase; letter-spacing:.1em; color:var(--muted); display:block; margin-bottom:2px; }
@@ -98,10 +98,12 @@ body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text);
 .cta-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
 .cta-body { flex:1; }
 .cta-tag { font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
-.cta-title { font-family:'Bebas Neue',sans-serif; font-size:22px; letter-spacing:.04em; margin-bottom:8px; }
-.cta-text { font-size:13px; color:var(--muted); line-height:1.65; }
+.cta-title { font-family:'Manrope',sans-serif; font-size:20px; font-weight:700; line-height:1.4; margin-bottom:8px; }
+.cta-text { font-size:16px; color:var(--muted); line-height:1.5; }
 .cta-arrow { font-size:18px; color:var(--muted); flex-shrink:0; transition:transform .2s,color .2s; margin-top:4px; }
 .cta-card:hover .cta-arrow { transform:translateX(4px); color:var(--accent); }
+.cta-btn { display:inline-block; margin-top:16px; padding:12px 28px; background:var(--accent); color:#111; border-radius:6px; font-family:'Manrope',sans-serif; font-size:16px; font-weight:600; letter-spacing:.02em; text-decoration:none; transition:background .2s,transform .2s; }
+.cta-btn:hover { background:#d4b07e; transform:translateY(-1px); }
 
 .footer-note { margin-top:64px; padding-top:24px; border-top:1px solid var(--border); font-size:11px; color:#555; line-height:1.65; }
 .reset-wrap { text-align:center; margin-top:40px; }
@@ -173,21 +175,19 @@ body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text);
   <div class="section-label">Deine Antreiber im Detail &middot; sortiert nach Auspr&auml;gung</div>
   <div id="rcards"></div>
   <div class="cta-section">
-    <a href="https://www.connylochelfeld.de/contact" target="_blank" class="cta-card">
-      <div class="cta-icon">&#128172;</div>
-      <div class="cta-body">
+    <div class="cta-card" style="flex-direction:column; gap:12px;">
+      <div class="cta-body" style="width:100%">
         <div class="cta-tag">N&auml;chster Schritt</div>
-        <div class="cta-title">Coaching mit Conny</div>
-        <div class="cta-text">Du willst verstehen, was hinter deinen Antreibern steckt &ndash; und wie du freier damit umgehst? Im Coaching schauen wir uns das gemeinsam an. Erstes Gespr&auml;ch kostenlos und unverbindlich.</div>
+        <div class="cta-title">Was steckt hinter deinen Antreibern?</div>
+        <div class="cta-text">Du willst verstehen, was hinter deinen Antreibern steckt &ndash; und wie du freier mit ihnen umgehen kannst? Im Coaching schauen wir uns das gemeinsam an. Das Kennenlerngespräch ist kostenlos und no&nbsp;strings&nbsp;attached.</div>
+        <a href="https://www.connylochelfeld.de/contact" target="_blank" class="cta-btn">Jetzt Kennenlerngespräch vereinbaren &nbsp;&rarr;</a>
       </div>
-      <div class="cta-arrow">&rarr;</div>
-    </a>
-    <div class="cta-card" style="cursor:default;pointer-events:none;">
-      <div class="cta-icon">&#128202;</div>
-      <div class="cta-body">
-        <div class="cta-tag">Tiefergehende Diagnostik</div>
-        <div class="cta-title">BIP &ndash; Bochumer Inventar zur berufsbezo&shy;genen Pers&ouml;nlichkeit</div>
-        <div class="cta-text">Dieser Test gibt dir einen ersten Eindruck. Das BIP ist ein wissenschaftlich fundiertes Pers&ouml;nlichkeitsinventar mit 14 berufsrelevanten Dimensionen &ndash; deutlich umfassender und pr&auml;ziser. Sprich Conny gerne im Erstgespr&auml;ch darauf an.</div>
+    </div>
+    <div class="cta-card" style="cursor:default; flex-direction:column; gap:12px;">
+      <div class="cta-body" style="width:100%">
+        <div class="cta-tag">M&ouml;chtest du tiefer gehen?</div>
+        <div class="cta-title">Das BIP &ndash; Bochumer Inventar zur berufsbezogenen Pers&ouml;nlichkeit</div>
+        <div class="cta-text">Dieser Selbsttest ist ein guter erster Schritt. Wenn du es genauer wissen willst: Das BIP ist ein wissenschaftlich fundiertes Pers&ouml;nlichkeitsinventar, das 14 berufsrelevante Dimensionen misst &ndash; von Leistungsmotivation &uuml;ber soziale Kompetenz bis hin zu emotionaler Stabilit&auml;t. Als Diplom-Psychologin kann ich das BIP mit dir durchf&uuml;hren und gemeinsam mit dir auswerten.</div>
       </div>
     </div>
   </div>
