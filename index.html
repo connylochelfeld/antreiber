@@ -18,7 +18,7 @@ body { font-family:'Manrope',sans-serif; background:var(--bg); color:var(--text)
 .page { max-width:760px; margin:0 auto; padding:56px 24px 100px; }
 
 .eyebrow { font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--accent); margin-bottom:16px; display:block; }
-.intro h1 { font-family:'Manrope',sans-serif; font-size:clamp(40px,6vw,64px); line-height:1.2; font-weight:800; color:var(--text); margin-bottom:24px; }
+.intro h1 { font-family:'Manrope',sans-serif; font-size:clamp(36px,7vw,64px); line-height:1.2; font-weight:800; color:var(--text); margin-bottom:24px; letter-spacing:-0.02em; }
 .intro-body { font-size:16px; color:var(--muted); max-width:560px; line-height:1.5; margin-bottom:40px; }
 .intro-body strong { color:var(--text); font-weight:500; }
 .rule { height:1px; background:var(--border); margin:40px 0; }
@@ -114,7 +114,10 @@ body { font-family:'Manrope',sans-serif; background:var(--bg); color:var(--text)
   .scale-pip{height:44px;}
 }
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes revealWord{from{opacity:0;transform:translateY(32px);}to{opacity:1;transform:translateY(0);}}
 .intro{animation:fadeUp .6s ease both;}
+.intro h1 .word{display:inline-block;overflow:hidden;vertical-align:bottom;}
+.intro h1 .word-inner{display:inline-block;animation:revealWord .7s cubic-bezier(0.22,1,0.36,1) both;}
 </style>
 </head>
 <body>
@@ -123,7 +126,7 @@ body { font-family:'Manrope',sans-serif; background:var(--bg); color:var(--text)
 <div id="quiz">
   <div class="intro">
     <span class="eyebrow">Selbsttest &middot; Transaktionsanalyse</span>
-    <h1>Deine inneren<br>Antreiber</h1>
+    <h1 id="main-title">Deine inneren<br>Antreiber</h1>
     <p class="intro-body">
       Innere Antreiber sind Glaubenss&auml;tze, die wir fr&uuml;h &uuml;bernommen haben &ndash; und die uns auch als Erwachsene noch leiten.
       <strong>Manchmal hilfreich, manchmal im Weg.</strong><br><br>
@@ -440,7 +443,38 @@ function buildCards(scores) {
 
 function resetTest() {
   ans = {};
-  buildQ();
+  // ── HEADLINE WORD REVEAL ──────────────────────────────────
+(function(){
+  var h = document.getElementById('main-title');
+  if (!h) return;
+  // Split each text node into words, preserve <br>
+  var html = h.innerHTML;
+  var parts = html.split(/(<br>)/);
+  var result = '';
+  var delay = 0;
+  parts.forEach(function(part) {
+    if (part === '<br>') { result += '<br>'; return; }
+    part.split(' ').forEach(function(word, i) {
+      if (!word) return;
+      result += '<span class="word"><span class="word-inner" style="animation-delay:' + delay + 'ms">' + word + '</span></span> ';
+      delay += 80;
+    });
+  });
+  h.innerHTML = result;
+})();
+
+buildQ();
+
+// ── AUTO HEIGHT: tells Framer how tall the page is ──────────
+function reportHeight() {
+  var h = document.documentElement.scrollHeight;
+  try { window.parent.postMessage({type: 'antreibertest_height', height: h}, '*'); } catch(e) {}
+}
+// Report on load, and whenever content changes
+reportHeight();
+if (window.ResizeObserver) {
+  new ResizeObserver(reportHeight).observe(document.body);
+}
   document.getElementById('prog-label').textContent = '0 von 50 beantwortet';
   document.getElementById('prog-pct').textContent   = '0%';
   document.getElementById('prog-bar').style.width   = '0%';
@@ -452,7 +486,38 @@ function resetTest() {
   try { window.parent.postMessage({type: 'antreibertest_scrollTop'}, '*'); } catch(e) {}
 }
 
+// ── HEADLINE WORD REVEAL ──────────────────────────────────
+(function(){
+  var h = document.getElementById('main-title');
+  if (!h) return;
+  // Split each text node into words, preserve <br>
+  var html = h.innerHTML;
+  var parts = html.split(/(<br>)/);
+  var result = '';
+  var delay = 0;
+  parts.forEach(function(part) {
+    if (part === '<br>') { result += '<br>'; return; }
+    part.split(' ').forEach(function(word, i) {
+      if (!word) return;
+      result += '<span class="word"><span class="word-inner" style="animation-delay:' + delay + 'ms">' + word + '</span></span> ';
+      delay += 80;
+    });
+  });
+  h.innerHTML = result;
+})();
+
 buildQ();
+
+// ── AUTO HEIGHT: tells Framer how tall the page is ──────────
+function reportHeight() {
+  var h = document.documentElement.scrollHeight;
+  try { window.parent.postMessage({type: 'antreibertest_height', height: h}, '*'); } catch(e) {}
+}
+// Report on load, and whenever content changes
+reportHeight();
+if (window.ResizeObserver) {
+  new ResizeObserver(reportHeight).observe(document.body);
+}
 </script>
 </body>
 </html>
